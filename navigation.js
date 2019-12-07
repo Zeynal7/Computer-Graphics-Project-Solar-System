@@ -7,28 +7,35 @@ var shouldMoveTo = "";
 var movementLeft = 0;
 var pointsToAdd = vec3();
 
+function canvasToWorld(){
+    
+}
 
-function addEventListeners(element){
 
-    // canvas.addEventListener('mousedown', function (event) {
-    //     mouseDown = true;
-    //     vInitial = eventToWorld(event);
-    //     vCurrent = vInitial;
-    //     console.log(vInitial);
-    // });
-    // canvas.addEventListener('mouseup', function (event) {
-    //     sphereMatrix = mult(calcRotation(), sphereMatrix);
-    //     vInitial = vCurrent;
-    //     mouseDown = false;
-    // });
-    // canvas.addEventListener('mousemove', function (event) {
-    //     if (!mouseDown) return;
-    //     vCurrent = eventToWorld(event);
-    // });
+function addNavigationTo(element){
+
+    element.addEventListener('mousedown', function (event) {
+        // mouseDown = true;
+        // vInitial = eventToWorld(event);
+        // vCurrent = vInitial;
+        // console.log(vInitial);
+        print("get");
+    });
+    element.addEventListener('mouseup', function (event) {
+        // sphereMatrix = mult(calcRotation(), sphereMatrix);
+        // vInitial = vCurrent;
+        // mouseDown = false;
+        print("GET");
+    });
+    element.addEventListener('mousemove', function (event) {
+        // if (!mouseDown) return;
+        // vCurrent = eventToWorld(event);
+        print("GETME");
+    });
 
     
     element.addEventListener('keydown', function(e) {
-        // console.log(e); // TODO fix movements by finding the vector of the points
+        console.log(e); // TODO fix movements by finding the vector of the points
         // https://math.stackexchange.com/questions/83404/finding-a-point-along-a-line-in-three-dimensions-given-two-points
         switch(e.keyCode){
             case 87: // w
@@ -52,6 +59,7 @@ function addEventListeners(element){
                 addMovements("Left");
                 break;
             case 68: // d
+                // TODO: Refactor
                 var fromPositionToTarget = findVector(camera.position, camera.target);
                 var upEndPoint = vec3();
                 glMatrix.vec3.add(upEndPoint, camera.up, camera.position);

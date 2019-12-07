@@ -13,7 +13,7 @@ function print(x){
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
 
-    addEventListeners(canvas);
+    addNavigationTo(canvas);
 
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) { alert("WebGL isn't available"); }
