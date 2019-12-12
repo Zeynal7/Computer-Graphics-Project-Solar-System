@@ -1,7 +1,7 @@
 
-function findVector(p1, p2){
+function findVector(start, end){
 	var out = vec3();
-	glMatrix.vec3.subtract(out, p1, p2);
+	glMatrix.vec3.subtract(out, end, start);
 	return out;
 }
 

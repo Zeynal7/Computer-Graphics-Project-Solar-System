@@ -12,6 +12,8 @@ function print(x){
 
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     addNavigationTo(canvas);
 
@@ -26,7 +28,7 @@ window.onload = function init() {
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    camera = new Camera(program, vec3(0, 0, 2), vec3(0, 0, 0), vec3(0, 1, 0));
+    camera = new Camera(program, vec3(0, 0, 100), vec3(0, 0, -10), vec3(0, 1, 0));
     light = new Light(program, vec4(0, 0, 0, 1));
 
     createPlanets();
@@ -56,8 +58,13 @@ function render() {
 
     for (var i = 0; i < numberOfSpheres; i++) {
         spheres[i].render();
-        spheres[i].rotate(spheres[i].rotationSpeed);
+        // spheres[i].rotate(spheres[i].rotationSpeed);
     }
+    // glMatrix.vec3.rotateY(camera.target, camera.target, camera.position, -nextPoint[0]/10);
+    // glMatrix.vec3.rotateX(camera.target, camera.target, camera.position, -nextPoint[1]/10);
+
+    // camera.rotateY(-nextPoint[0]);
+    // camera.rotateX(-nextPoint[1]);
 
     requestAnimFrame(render);
 }
