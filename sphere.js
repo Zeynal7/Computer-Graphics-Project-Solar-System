@@ -2,8 +2,8 @@
  * Class sphere, extends from the _3DObject class
  */
 class Sphere extends _3DObject {
-    constructor(program, position, rotationSpeed, radius = 1, N = 50, M = 50) {
-        super(program, position, rotationSpeed);
+    constructor(program, position, rotationSpeed, radius = 1,  emission = vec3(0, 0, 0), N = 50, M = 50) {
+        super(program, position, rotationSpeed, emission);
         this.position = position;
         this.radius = radius;
         this.rotationSpeed = rotationSpeed;

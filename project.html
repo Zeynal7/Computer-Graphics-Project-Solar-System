@@ -15,6 +15,7 @@ uniform mat4 m_Proj;
 varying vec3 o_Norm;
 varying vec3 o_Camera;
 varying vec3 o_Light;
+varying vec3 emission;
 
 void main() 
 {
@@ -44,6 +45,7 @@ varying vec3 o_Light;
 uniform float col_Shininess;
 uniform vec3 col_Ambient, col_Diffuse, col_Specular;
 uniform vec3 light_Ambient, light_Diffuse, light_Specular;
+uniform vec3 light_Emission;
 
 void main()
 {
@@ -59,12 +61,12 @@ void main()
     
     float Ks = pow(max(dot(N, H), 0.0), col_Shininess);
 	vec3 specular = Ks * col_Specular * light_Specular;
-
+    vec3 emission = light_Emission;
 	// discard the specular highlight if the light's behind the vertex
 	if (dot(L, N) < 0.0) 
 	    specular = vec3(0.0, 0.0, 0.0);
     
-	gl_FragColor.xyz = ambient + diffuse + specular;
+	gl_FragColor.xyz = ambient + diffuse + specular + emission;
 	gl_FragColor.a = 1.0;
 }
 </script>

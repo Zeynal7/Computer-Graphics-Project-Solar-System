@@ -8,7 +8,7 @@
  * TODO: add texture
  */
 class _3DObject {
-    constructor(program, position = vec3(0, 0, 0), rotationSpeed = 0) {
+    constructor(program, position = vec3(0, 0, 0), rotationSpeed = 0, emission = vec3(0, 0, 0)) {
         this.program = program;
         this.bufVertex = 0;
         this.bufIndex = 0;
@@ -25,6 +25,7 @@ class _3DObject {
             specular: vec3(0.9, 1.0, 0.9),
             shininess: 250.0
         }
+        this.emission = emission;
     }
 
     loadData() {
@@ -65,6 +66,9 @@ class _3DObject {
 
         var shininess = gl.getUniformLocation(this.program, "col_Shininess");
         gl.uniform1f(shininess, this.material.shininess);
+
+        var ambient = gl.getUniformLocation(this.program, "light_Emission");
+        gl.uniform3fv(ambient, flatten(this.emission));
 
         var model = gl.getUniformLocation(this.program, "m_Model");
         gl.uniformMatrix4fv(model, false, flatten(this.matModel));

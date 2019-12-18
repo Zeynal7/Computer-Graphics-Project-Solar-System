@@ -64,4 +64,5 @@ function createCoordinates(){
 function createPlanets(){
     createCoordinates();
     createSpheres();
+    spheres[0].emission = vec3(1, 1, 0);
 }
