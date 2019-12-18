@@ -4,7 +4,6 @@ var program;
 var camera;
 var light;
 
-//var lightSourcesOfSun = [];
 
 function print(x){
     return console.log(x);
@@ -33,11 +32,6 @@ window.onload = function init() {
     light = new Light(program, vec4(0, 0, 0, 1));
 
     createPlanets();
-
-    // for (var i = 0; i < spheres[0].vertices.length; i++) {
-    //     var newLight = new Light(program, spheres[0].vertices[i]);
-    //     lightSourcesOfSun.push(newLight);
-    // }
 
     render();
 }
