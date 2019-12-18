@@ -1,6 +1,6 @@
 
 
-var movingSpeed = 1;
+var movingSpeed = 0.7;
 var movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
 var movingMode = false;
 

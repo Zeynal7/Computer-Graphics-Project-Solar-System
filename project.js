@@ -27,7 +27,7 @@ window.onload = function init() {
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    camera = new Camera(program, vec3(0, 0, 100), vec3(0, 0, -100), vec3(0, 1, 0));
+    camera = new Camera(program, vec3(0, 0, 100), vec3(0, 0, -100), vec3(0, -1, 0));
     // camera = new Camera(program, vec3(0, 100, 0), vec3(0, -100, 0), vec3(0, 0, 1));
     light = new Light(program, vec4(0, 0, 0, 1));
 

@@ -3,7 +3,7 @@ class Light {
         this.program = program;
         this.position = position;
         this.intensity = {
-            ambient: vec3(0.4, 0.4, 0.4),
+            ambient: vec3(1.0, 1.0, 1.0),
             diffuse: vec3(1.0, 1.0, 1.0),
             specular: vec3(0.2, 0.2, 0.2)
         }

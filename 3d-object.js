@@ -13,9 +13,11 @@ class _3DObject {
         this.bufVertex = 0;
         this.bufIndex = 0;
         this.bufNormal = 0;
+        this.bufTexture = 0;
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texturePoints = [];
         this.position = position;
         this.rotationSpeed = rotationSpeed;
         this.matModel = mat4();
@@ -26,6 +28,7 @@ class _3DObject {
             shininess: 250.0
         }
         this.emission = emission;
+        this.texture = 0;
     }
 
     loadData() {
@@ -47,10 +50,18 @@ class _3DObject {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufNormal);
         gl.bufferData(gl.ARRAY_BUFFER, flatten(this.normals), gl.STATIC_DRAW);
 
+        // creating buffer for textures
+        this.bufTexture = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTexture);
+        gl.bufferData(gl.ARRAY_BUFFER, flatten(this.texturePoints), gl.STATIC_DRAW);
+        // print("DFSAASD");
+        print(this.texturePoints.length);
+        // print(flatten(this.texturePoints).length * 4); // 19600
         // creating buffer for element indices
         this.bufIndex = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufIndex);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
+
     }
 
     render() {
@@ -85,8 +96,18 @@ class _3DObject {
         gl.vertexAttribPointer(norm, 4, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(norm);
 
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTexture);
+
+        var texCoordAttributeLocation = gl.getAttribLocation(program, 'vertTexCoord');
+        gl.vertexAttribPointer(texCoordAttributeLocation, 2, gl.FLOAT, gl.FALSE, 0, 0);
+        gl.enableVertexAttribArray(texCoordAttributeLocation);
+
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        gl.activeTexture(gl.TEXTURE0);
+
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufIndex);
-        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0)
+        gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
+
     }
 
     translate(dir) {

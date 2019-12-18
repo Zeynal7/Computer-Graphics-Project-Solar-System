@@ -2,52 +2,56 @@
 var numberOfSpheres = 10; // 9 planets + 1 Sun
 var spheres = [];
 
+var divisionOfSizes = 20000;
+var divisionOfDistance = 10000000;
+var divisionOfSpeeds = 100000;
+
+
 // Infos taken from: https://www.enchantedlearning.com/subjects/astronomy/planets/
 
-var radiuses = [ // Miles divided by 10000
-     0.4938, // Sun itself - 86.4938
-     0.3031, // Mercury
-     0.7521, // Venus
-     0.7926, // Earth
-     0.4222, // Mars
-     8.8729, // Jupiter
-     7.4600, // Saturn
-     3.2600, // Uranus
-     3.0200, // Neptune
-     0.1413, // Pluto
+var radiuses = [ // in KM
+    60268, // Sun - real value is 695510, but it is too big that eats other planets
+    2439.7, // Mercury
+    6051.8, // Venus
+    6378.1, // Earth
+    3396.2, // Mars
+    71492,  // Jupiter
+    60268,  // Saturn
+    25559,  // Uranus
+    24764,  // Neptune
+    1195    // Pluto
 ];
-
-var distancesFromSun = [ // Divided by 100 in KM
-      0.0, // Sun itself
-     5.79, // Mercury
-    10.82, // Venus
-    14.96, // Earth
-    22.79, // Mars
-    77.84, // Jupiter
-    142.7, // Saturn
-    287.1, // Uranus
-    449.7, // Neptune
-    591.3, // Pluto
+var distancesFromSun = [ // in KM
+    0,          // Sun itself
+    57900000,   // Mercury
+    108200000,  // Venus
+    149600000,  // Earth
+    227900000,  // Mars
+    778300000,  // Jupiter
+    1427000000, // Saturn
+    2871000000, // Uranus
+    4497100000, // Neptune
+    5913000000  // Pluto
 ]
 
-var rotationSpeedsAroundSun = [ // Km/h divided by 100;
-      0.0, // Sun itself
-    1.07132, // Mercury
-    1.26108, // Venus
-    1.07244, // Earth
-    0.86868, // Mars
-    0.047016, // Jupiter
-    0.34705, // Saturn
-    0.24516, // Uranus
-    0.19548, // Neptune
-    0.17064, // Pluto
+var rotationSpeedsAroundSun = [ // Km/h;
+    0.0,    // Sun itself
+    172404, // Mercury
+    126108, // Venus
+    107244, // Earth
+    86868,  // Mars
+    47016,  // Jupiter
+    34705,  // Saturn
+    24516,  // Uranus
+    19548,  // Neptune
+    17064   // Pluto
 ];
 
 var planetLocations = [];
 
 function createSpheres(){
     for (var i = 0; i < numberOfSpheres; i++) {
-        var newSphere= new Sphere(program, planetLocations[i], rotationSpeedsAroundSun[i], radiuses[i]);
+        var newSphere= new Sphere(program, planetLocations[i], rotationSpeedsAroundSun[i]/divisionOfSpeeds, radiuses[i]/divisionOfSizes, texture_id = i.toString());
         spheres.push(newSphere);
         spheres[i].init();
     }
@@ -56,7 +60,7 @@ function createSpheres(){
 function createCoordinates(){
     for (var i = 0; i < numberOfSpheres; i++) {
         var newCoordinate = vec4(0.0, 0.0, 0.0, 0.0);
-        glMatrix.vec4.add(newCoordinate, vec4(0.0, 0.0, 0.0, 0.0), vec4(distancesFromSun[i], 0.0, 0.0, 0.0));
+        glMatrix.vec4.add(newCoordinate, vec4(0.0, 0.0, 0.0, 0.0), vec4(distancesFromSun[i]/divisionOfDistance, 0.0, 0.0, 0.0));
         planetLocations.push(newCoordinate);
     }
 }
