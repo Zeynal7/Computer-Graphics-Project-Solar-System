@@ -32,8 +32,7 @@ window.onload = function init() {
     light = new Light(program, vec4(0, 0, 0, 1));
 
     createPlanets();
-
-    // spheres[10].rotateAround(spheres[10].rotationSpeed);
+    
     render();
 }
 
@@ -47,30 +46,13 @@ function render() {
 
     checkNavigation();
 
-    // lightSourcesOfSun[point % (spheres[0].vertices.length-1)].render();
-    // lightSourcesOfSun[spheres[0].vertices.length-1].render();
-    // for (var i = 0; i < spheres[0].vertices.length; i++) {
-    //     lightSourcesOfSun[i].render();
-    //     // lightSourcesOfSun[i].rotate(2);
-    // }
-
     for (var i = 0; i < numberOfSpheres; i++) {
         spheres[i].render();
-        // spheres[i].rotate(spheres[i].rotationSpeed);
+        if (shouldRotate){
+            spheres[i].rotate(spheres[i].rotationSpeed);
+            spheres[i].rotateAround(spheres[i].rotationSpeedAroundGivenAxis);
+        }
     }
-
-    // if (x > 0){
-        
-    spheres[10].rotateAround(spheres[10].rotationSpeedAroundGivenAxis);
-    spheres[10].rotate(spheres[10].rotationSpeed);
-    // print(spheres[10].rotationSpeedAroundGivenAxis);
-    // x--;
-// }
-    // glMatrix.vec3.rotateY(camera.target, camera.target, camera.position, -nextPoint[0]/10);
-    // glMatrix.vec3.rotateX(camera.target, camera.target, camera.position, -nextPoint[1]/10);
-
-    // camera.rotateY(-nextPoint[0]);
-    // camera.rotateX(-nextPoint[1]);
 
     requestAnimFrame(render);
 }

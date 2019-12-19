@@ -3,6 +3,7 @@
 var movingSpeed = 0.7;
 var movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
 var movingMode = false;
+var shouldRotate = true;
 
 var navigationInfo = {
     "Forward": [false, vec3()],
@@ -70,6 +71,9 @@ function addNavigationTo(element){
         // console.log(e); // TODO fix movements by finding the vector of the points
         // https://math.stackexchange.com/questions/83404/finding-a-point-along-a-line-in-three-dimensions-given-two-points
         switch(e.keyCode){
+            case 82: // r
+                shouldRotate = !shouldRotate;
+                break;
             case 87: // w
                 var pointsToAdd = findIteration(camera.position, camera.target);
                 addMovements("Forward", pointsToAdd);

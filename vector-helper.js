@@ -90,7 +90,3 @@ function findIteration(point1, point2){
     pointsToAdd2 = vec3(pointsToAdd2[0], pointsToAdd2[1], pointsToAdd2[2]);
     return pointsToAdd2;
 }
-
-// function getXYZ(vector){
-//     return vector[0], vector[1], vector[2]);
-// }

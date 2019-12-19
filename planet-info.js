@@ -4,7 +4,7 @@ var spheres = [];
 
 var divisionOfSizes = 5000;
 var divisionOfDistance = 1000000;
-var divisionOfSpeeds = 1000000;
+var divisionOfSpeeds = 500000;
 
 
 // Infos taken from: https://www.enchantedlearning.com/subjects/astronomy/planets/
@@ -50,7 +50,7 @@ var rotationSpeedsAroundSun = [ // Km/h;
     107244    // Moon - Around Sun
 ];
 
-var rotationSpeedAroundEarth = 3683;
+var rotationSpeedAroundEarth = 3683; // for better results use times 10
 
 var planetLocations = [];
 
@@ -60,7 +60,7 @@ function createSpheres(){
             if(i == numberOfSpheres - 1){
                 var centerOfEarth = vec3(planetLocations[3][0], planetLocations[3][1], planetLocations[3][2]);
                 newSphere.rotationAxis = centerOfEarth;
-                newSphere.rotationSpeedAroundGivenAxis = rotationSpeedAroundEarth;
+                newSphere.rotationSpeedAroundGivenAxis = rotationSpeedAroundEarth/divisionOfSpeeds;
             }
             spheres.push(newSphere);
             spheres[i].init();

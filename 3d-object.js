@@ -5,7 +5,6 @@
  * Position is a vec3(x, y, z) structure.
  * Model matrix is object transformation matrix, which initally is identity matrix. 
  * Child classes should override loadData method and implement specific vertex, index loading mechanism.
- * TODO: add texture
  */
 class _3DObject {
     constructor(program, position = vec3(0, 0, 0), rotationSpeed = 0, emission = vec3(0, 0, 0)) {
@@ -56,9 +55,7 @@ class _3DObject {
         this.bufTexture = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTexture);
         gl.bufferData(gl.ARRAY_BUFFER, flatten(this.texturePoints), gl.STATIC_DRAW);
-        // print("DFSAASD");
-        // print(this.texturePoints.length);
-        // print(flatten(this.texturePoints).length * 4); // 19600
+
         // creating buffer for element indices
         this.bufIndex = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufIndex);
@@ -123,9 +120,11 @@ class _3DObject {
 
     rotateAround(speed = self.rotationSpeedAroundGivenAxis){
         var rotationMat4 = mat4();
-        var newPos = subtract(translate(this.rotationAxis[0], this.rotationAxis[1], this.rotationAxis[2]), mat4());
+        var newPos = subtract(spheres[3].matModel, mat4());
         this.matModel = subtract(this.matModel, newPos);
-        this.matModel = mult(rotate(speed, vec3(0, 1, 0)), this.matModel);rotationMat4 = this.matModel;this.matModel = newPos;
+        this.matModel = mult(rotate(speed, vec3(0, 1, 0)), this.matModel);
+        rotationMat4 = this.matModel;
+        this.matModel = newPos;
         this.matModel = add(rotationMat4, this.matModel);
     }
 }
