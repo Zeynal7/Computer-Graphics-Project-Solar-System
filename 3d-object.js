@@ -15,6 +15,7 @@ class _3DObject {
         this.bufTexture = 0;
         this.rotationAxis = vec3(0, 1, 0);
         this.rotationSpeedAroundGivenAxis = 0;
+        this.whichPlanetToRotateAround = -1;
         this.vertices = [];
         this.indices = [];
         this.normals = [];
@@ -40,7 +41,7 @@ class _3DObject {
         this.matModel = translate(this.position[0], this.position[1], this.position[2]);
 
         this.loadData();
-
+        this.generateTexture();
         // creating buffer for vertex positions
         this.bufVertex = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufVertex);
@@ -109,6 +110,17 @@ class _3DObject {
 
     }
 
+
+    generateTexture(){
+            self.texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, self.texture);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, document.getElementById(self.texture_id));
+    }
+
     translate(dir) {
         this.matModel = mult(translate(dir), this.matModel);
     }
@@ -118,14 +130,16 @@ class _3DObject {
     }
 
 
-    rotateAround(speed = self.rotationSpeedAroundGivenAxis){
-        var rotationMat4 = mat4();
-        var newPos = subtract(spheres[3].matModel, mat4());
-        this.matModel = subtract(this.matModel, newPos);
-        this.matModel = mult(rotate(speed, vec3(0, 1, 0)), this.matModel);
-        rotationMat4 = this.matModel;
-        this.matModel = newPos;
-        this.matModel = add(rotationMat4, this.matModel);
+    rotateAround(speed = self.rotationSpeedAroundGivenAxis, axis = this.rotationAxis){
+        if(this.whichPlanetToRotateAround != -1){
+            var rotationMat4 = mat4();
+            var newPos = subtract(spheres[this.whichPlanetToRotateAround].matModel, mat4());
+            this.matModel = subtract(this.matModel, newPos);
+            this.matModel = mult(rotate(speed, axis), this.matModel);
+            rotationMat4 = this.matModel;
+            this.matModel = newPos;
+            this.matModel = add(rotationMat4, this.matModel);
+        }
     }
 }
 

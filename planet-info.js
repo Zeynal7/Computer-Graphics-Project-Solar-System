@@ -58,9 +58,12 @@ function createSpheres(){
     for (var i = 0; i < numberOfSpheres; i++) {
             var newSphere= new Sphere(program, planetLocations[i], rotationSpeedsAroundSun[i]/divisionOfSpeeds, radiuses[i]/divisionOfSizes, texture_id = i.toString());
             if(i == numberOfSpheres - 1){
-                var centerOfEarth = vec3(planetLocations[3][0], planetLocations[3][1], planetLocations[3][2]);
-                newSphere.rotationAxis = centerOfEarth;
+                newSphere.rotationAxis = vec3(0, 0, 1);
                 newSphere.rotationSpeedAroundGivenAxis = rotationSpeedAroundEarth/divisionOfSpeeds;
+                newSphere.whichPlanetToRotateAround = 3;
+                
+                triangle = new Triangle(program, vec4(0.0, 0.0, 0.0, 1.0), 40000, '2');
+                triangle.init();
             }
             spheres.push(newSphere);
             spheres[i].init();

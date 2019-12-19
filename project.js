@@ -4,6 +4,7 @@ var program;
 var camera;
 var light;
 var extraLightFromCamera;
+var triangle;
 
 
 function print(x){
@@ -34,7 +35,12 @@ window.onload = function init() {
 
     createPlanets();
 
+
+    triangle = new Triangle(program, vec4(0.0, 0.0, 0.0, 1.0), 400000, '2');
+    triangle.init();
+
     render();
+
 }
 
 var x = 3;
@@ -50,17 +56,21 @@ function render() {
     for (var i = 0; i < numberOfSpheres; i++) {
         spheres[i].render();
         if (shouldRotate && !isNearAnyPlanet[0]){
-            spheres[i].rotate(spheres[i].rotationSpeed);
+            // spheres[i].rotate(spheres[i].rotationSpeed);
             spheres[i].rotateAround(spheres[i].rotationSpeedAroundGivenAxis);
         }
     }
 
     if(isNearAnyPlanet[0]){
-        print("LIGHT IS RENDERED");
+        // print("LIGHT IS RENDERED");
         extraLightFromCamera.render();
     }else{
         light.render();
     }
+
+
+    triangle.render();
+
 //     if(x>0){
 //     spheres[1].rotate(spheres[1].rotationSpeed);
 //     print(spheres[1].matModel);
