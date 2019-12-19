@@ -4,6 +4,7 @@ class Camera {
         this.position = position;
         this.target = target;
         this.up = up;
+        this.matView = mat4();
     }
 
     render() {
@@ -11,8 +12,8 @@ class Camera {
         gl.uniform4fv(pos, flatten(vec4(this.position, 1.0)));
 
         var view = gl.getUniformLocation(this.program, "m_View");
-        var matView = lookAt(this.position, this.target, this.up);
-        gl.uniformMatrix4fv(view, false, flatten(matView));
+        this.matView = lookAt(this.position, this.target, this.up);
+        gl.uniformMatrix4fv(view, false, flatten(this.matView));
 
         var proj = gl.getUniformLocation(this.program, "m_Proj");
         var matProj = perspective(50, canvas.width/canvas.height, 0.01, 1000);

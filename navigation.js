@@ -4,6 +4,8 @@ var movingSpeed = 0.7;
 var movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
 var movingMode = false;
 var shouldRotate = true;
+var isNearAnyPlanet = [false, 0];
+
 
 var navigationInfo = {
     "Forward": [false, vec3()],
@@ -197,8 +199,27 @@ function checkNavigation(){
                     glMatrix.vec3.subtract(camera.position, camera.position, pointsToAdd);
                     break;
             } 
-    }
 
+            var positionOfCamera = camera.position;
+
+            var matModelOfPlanets = mat4();
+
+
+            for (var i = 1; i < numberOfSpheres; i++) {
+                matModelOfPlanets = spheres[i].matModel;
+                positionOfPlanet = vec3(matModelOfPlanets[0][3], matModelOfPlanets[1][3], matModelOfPlanets[2][3]);
+                var distanceBetweenCameraAndPlanet = length(findVector(positionOfCamera, positionOfPlanet));
+                if(distanceBetweenCameraAndPlanet < radiuses[i]*5/divisionOfSizes){
+                    isNearAnyPlanet = [true, i];
+                }
+            }
+
+            if(isNearAnyPlanet[0]){
+                shouldRotate = false;
+            }else{
+                shouldRotate = true;
+            }
+}
 }
 
 

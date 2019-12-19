@@ -32,7 +32,7 @@ window.onload = function init() {
     light = new Light(program, vec4(0, 0, 0, 1));
 
     createPlanets();
-    
+
     render();
 }
 
@@ -53,6 +53,13 @@ function render() {
             spheres[i].rotateAround(spheres[i].rotationSpeedAroundGivenAxis);
         }
     }
+//     if(x>0){
+//     spheres[1].rotate(spheres[1].rotationSpeed);
+//     print(spheres[1].matModel);
+//     x--;
+// }
+
+
 
     requestAnimFrame(render);
 }
