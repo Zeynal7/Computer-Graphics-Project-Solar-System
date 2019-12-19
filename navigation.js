@@ -4,7 +4,7 @@ var movingSpeed = 0.7;
 var movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
 var movingMode = false;
 var shouldRotate = true;
-var isNearAnyPlanet = [false, 0];
+var isNearAnyPlanet = [false, -1];
 
 
 var navigationInfo = {
@@ -203,21 +203,32 @@ function checkNavigation(){
             var positionOfCamera = camera.position;
 
             var matModelOfPlanets = mat4();
-
+            var isNearAnyPlanet = false;
+            var oldPlanet = window.isNearAnyPlanet[1]
 
             for (var i = 1; i < numberOfSpheres; i++) {
                 matModelOfPlanets = spheres[i].matModel;
                 positionOfPlanet = vec3(matModelOfPlanets[0][3], matModelOfPlanets[1][3], matModelOfPlanets[2][3]);
                 var distanceBetweenCameraAndPlanet = length(findVector(positionOfCamera, positionOfPlanet));
-                if(distanceBetweenCameraAndPlanet < radiuses[i]*5/divisionOfSizes){
-                    isNearAnyPlanet = [true, i];
+                if(distanceBetweenCameraAndPlanet < radiuses[i]*3/divisionOfSizes){
+                        window.isNearAnyPlanet = [true, i];
+                        spheres[i].emission = vec3(0.1, 0.1, 0.1);
+                        extraLightFromCamera = new Light(program, vec4(camera.position, 1));
+                        extraLightFromCamera.intensity.specular = vec3(1.0, 1.0, 1.0);
+                        extraLightFromCamera.intensity.ambient = vec3(1.0, 1.0, 1.0);
+                        extraLightFromCamera.intensity.diffuse = vec3(1.0, 1.0, 1.0);
+                        isNearAnyPlanet = true;
                 }
             }
 
-            if(isNearAnyPlanet[0]){
-                shouldRotate = false;
+            window.isNearAnyPlanet[0] = isNearAnyPlanet;
+            if(!isNearAnyPlanet && oldPlanet != -1){
+                window.isNearAnyPlanet = [false, -1];
+                for (var i = 1; i < numberOfSpheres; i++) {
+                    spheres[i].emission = vec3(0, 0, 0);
+                }
             }else{
-                shouldRotate = true;
+                // shouldRotate = true;
             }
 }
 }

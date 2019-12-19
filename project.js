@@ -3,6 +3,7 @@ var gl;
 var program;
 var camera;
 var light;
+var extraLightFromCamera;
 
 
 function print(x){
@@ -42,16 +43,23 @@ function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     camera.render();
-    light.render();
+    // light.render();
 
     checkNavigation();
 
     for (var i = 0; i < numberOfSpheres; i++) {
         spheres[i].render();
-        if (shouldRotate){
+        if (shouldRotate && !isNearAnyPlanet[0]){
             spheres[i].rotate(spheres[i].rotationSpeed);
             spheres[i].rotateAround(spheres[i].rotationSpeedAroundGivenAxis);
         }
+    }
+
+    if(isNearAnyPlanet[0]){
+        print("LIGHT IS RENDERED");
+        extraLightFromCamera.render();
+    }else{
+        light.render();
     }
 //     if(x>0){
 //     spheres[1].rotate(spheres[1].rotationSpeed);
