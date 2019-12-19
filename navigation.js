@@ -1,6 +1,6 @@
 
 
-var movingSpeed = 0.7;
+var movingSpeed = 5.7;
 var movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
 var movingMode = false;
 var shouldRotate = true;
@@ -210,7 +210,7 @@ function checkNavigation(){
                 matModelOfPlanets = spheres[i].matModel;
                 positionOfPlanet = vec3(matModelOfPlanets[0][3], matModelOfPlanets[1][3], matModelOfPlanets[2][3]);
                 var distanceBetweenCameraAndPlanet = length(findVector(positionOfCamera, positionOfPlanet));
-                if(distanceBetweenCameraAndPlanet < radiuses[i]*3/divisionOfSizes){
+                if(distanceBetweenCameraAndPlanet < radiuses[i]*10/divisionOfSizes){
                         window.isNearAnyPlanet = [true, i];
                         spheres[i].emission = vec3(0.1, 0.1, 0.1);
                         extraLightFromCamera = new Light(program, vec4(camera.position, 1));

@@ -16,7 +16,7 @@ class Camera {
         gl.uniformMatrix4fv(view, false, flatten(this.matView));
 
         var proj = gl.getUniformLocation(this.program, "m_Proj");
-        var matProj = perspective(50, canvas.width/canvas.height, 0.01, 1000);
+        var matProj = perspective(50, canvas.width/canvas.height, 0.01, 10000);
         gl.uniformMatrix4fv(proj, false, flatten(matProj));
     }
 }
