@@ -33,8 +33,11 @@ window.onload = function init() {
 
     createPlanets();
 
+    // spheres[10].rotateAround(spheres[10].rotationSpeed);
     render();
 }
+
+var x = 3;
 
 function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -53,8 +56,16 @@ function render() {
 
     for (var i = 0; i < numberOfSpheres; i++) {
         spheres[i].render();
-        spheres[i].rotate(spheres[i].rotationSpeed);
+        // spheres[i].rotate(spheres[i].rotationSpeed);
     }
+
+    // if (x > 0){
+        
+    spheres[10].rotateAround(spheres[10].rotationSpeedAroundGivenAxis);
+    spheres[10].rotate(spheres[10].rotationSpeed);
+    // print(spheres[10].rotationSpeedAroundGivenAxis);
+    // x--;
+// }
     // glMatrix.vec3.rotateY(camera.target, camera.target, camera.position, -nextPoint[0]/10);
     // glMatrix.vec3.rotateX(camera.target, camera.target, camera.position, -nextPoint[1]/10);
 

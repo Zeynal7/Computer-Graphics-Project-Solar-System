@@ -14,6 +14,8 @@ class _3DObject {
         this.bufIndex = 0;
         this.bufNormal = 0;
         this.bufTexture = 0;
+        this.rotationAxis = vec3(0, 1, 0);
+        this.rotationSpeedAroundGivenAxis = 0;
         this.vertices = [];
         this.indices = [];
         this.normals = [];
@@ -55,7 +57,7 @@ class _3DObject {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTexture);
         gl.bufferData(gl.ARRAY_BUFFER, flatten(this.texturePoints), gl.STATIC_DRAW);
         // print("DFSAASD");
-        print(this.texturePoints.length);
+        // print(this.texturePoints.length);
         // print(flatten(this.texturePoints).length * 4); // 19600
         // creating buffer for element indices
         this.bufIndex = gl.createBuffer();
@@ -115,15 +117,16 @@ class _3DObject {
     }
 
     rotate(angle = self.rotationSpeed) {
-        // var newMatModel = mat4();
-        // print("BEFORE");
-        // print(this.matModel);
-        // print(newMatModel);
-        // glMatrix.mat4.rotate(newMatModel, this.matModel, angle, vec3(0, 1, 0));
-        // print("AFTER");
-        // print(newMatModel);
-        // this.matModel = newMatModel;
         this.matModel = mult(rotate(angle, vec3(0, 1, 0)), this.matModel);
+    }
+
+
+    rotateAround(speed = self.rotationSpeedAroundGivenAxis){
+        var rotationMat4 = mat4();
+        var newPos = subtract(translate(this.rotationAxis[0], this.rotationAxis[1], this.rotationAxis[2]), mat4());
+        this.matModel = subtract(this.matModel, newPos);
+        this.matModel = mult(rotate(speed, vec3(0, 1, 0)), this.matModel);rotationMat4 = this.matModel;this.matModel = newPos;
+        this.matModel = add(rotationMat4, this.matModel);
     }
 }
 

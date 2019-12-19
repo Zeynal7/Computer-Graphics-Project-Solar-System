@@ -1,10 +1,10 @@
 // Planets
-var numberOfSpheres = 10; // 9 planets + 1 Sun
+var numberOfSpheres = 11; // 9 planets + 1 Sun + 1 moon
 var spheres = [];
 
-var divisionOfSizes = 20000;
-var divisionOfDistance = 10000000;
-var divisionOfSpeeds = 100000;
+var divisionOfSizes = 5000;
+var divisionOfDistance = 1000000;
+var divisionOfSpeeds = 1000000;
 
 
 // Infos taken from: https://www.enchantedlearning.com/subjects/astronomy/planets/
@@ -19,7 +19,8 @@ var radiuses = [ // in KM
     60268,  // Saturn
     25559,  // Uranus
     24764,  // Neptune
-    1195    // Pluto
+    1195,    // Pluto
+    1737.1  // Moon
 ];
 var distancesFromSun = [ // in KM
     0,          // Sun itself
@@ -31,7 +32,8 @@ var distancesFromSun = [ // in KM
     1427000000, // Saturn
     2871000000, // Uranus
     4497100000, // Neptune
-    5913000000  // Pluto
+    5913000000,  // Pluto
+    3844000 + 149600000      // Moon + Distance from Earth (real distance is 3844000)
 ]
 
 var rotationSpeedsAroundSun = [ // Km/h;
@@ -44,16 +46,24 @@ var rotationSpeedsAroundSun = [ // Km/h;
     34705,  // Saturn
     24516,  // Uranus
     19548,  // Neptune
-    17064   // Pluto
+    17064,  // Pluto
+    107244    // Moon - Around Sun
 ];
+
+var rotationSpeedAroundEarth = 3683;
 
 var planetLocations = [];
 
 function createSpheres(){
     for (var i = 0; i < numberOfSpheres; i++) {
-        var newSphere= new Sphere(program, planetLocations[i], rotationSpeedsAroundSun[i]/divisionOfSpeeds, radiuses[i]/divisionOfSizes, texture_id = i.toString());
-        spheres.push(newSphere);
-        spheres[i].init();
+            var newSphere= new Sphere(program, planetLocations[i], rotationSpeedsAroundSun[i]/divisionOfSpeeds, radiuses[i]/divisionOfSizes, texture_id = i.toString());
+            if(i == numberOfSpheres - 1){
+                var centerOfEarth = vec3(planetLocations[3][0], planetLocations[3][1], planetLocations[3][2]);
+                newSphere.rotationAxis = centerOfEarth;
+                newSphere.rotationSpeedAroundGivenAxis = rotationSpeedAroundEarth;
+            }
+            spheres.push(newSphere);
+            spheres[i].init();
     }
 }
 

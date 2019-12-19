@@ -110,12 +110,12 @@ function addNavigationTo(element){
                 addMovements("Up", pointsToAdd);           
                 break; 
             case 38: // Arrow Up
-                movingSpeed +=0.1;
+                movingSpeed +=0.05;
                 movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
                 break;
             case 40: // Arrow Down
-                if (movingSpeed > 1){
-                    movingSpeed -=0.1;
+                if (movingSpeed > 0.05){
+                    movingSpeed -=0.05;
                     movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
                 } 
                 break;
