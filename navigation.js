@@ -1,6 +1,6 @@
 
 
-var movingSpeed = 5.7;
+var movingSpeed = 1.7;
 var movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
 var movingMode = false;
 var shouldRotate = true;
@@ -21,10 +21,22 @@ var navigationInfo = {
 function addNavigationTo(element){
 
     element.addEventListener('mousedown', function (event) {
-        movingMode = !movingMode;
+        if(isNearAnyPlanet[0]){
+            var point = canvasToWorld(event);
+            startMotion(point[0], point[1]);
+        }else{
+            movingMode = !movingMode;
+        } 
+    });
+    element.addEventListener("mouseup", function(event){
+        var point = canvasToWorld(event);
+        stopMotion(point[0], point[1]);
     });
     element.addEventListener('mousemove', function (event) {
-        if(movingMode){
+        if(isNearAnyPlanet[0]){
+            var point = canvasToWorld(event);
+            mouseMotion(point[0], point[1]);
+        }else if(movingMode){
             // Getting old camera position and Moving Camera to origin
             // Getting direct copy result in only reference of a variable, not a copy itself.
             var oldCameraPosition = vec3();
@@ -115,6 +127,12 @@ function addNavigationTo(element){
                 var pointsToAdd = findIteration(camera.position, upEndPoint);
                 addMovements("Up", pointsToAdd);           
                 break; 
+            case 39: // Arrow Right
+                glMatrix.vec3.rotateY(camera.target, camera.target, camera.position, movingSpeed*Math.PI/180);
+                break;
+            case 37: // Arrow Left
+                glMatrix.vec3.rotateY(camera.target, camera.target, camera.position, -movingSpeed*Math.PI/180);
+                break;
             case 38: // Arrow Up
                 movingSpeed +=0.05;
                 movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
@@ -200,36 +218,8 @@ function checkNavigation(){
                     break;
             } 
 
-            var positionOfCamera = camera.position;
+            checkTheTrackball();
 
-            var matModelOfPlanets = mat4();
-            var isNearAnyPlanet = false;
-            var oldPlanet = window.isNearAnyPlanet[1]
-
-            for (var i = 1; i < numberOfSpheres; i++) {
-                matModelOfPlanets = spheres[i].matModel;
-                positionOfPlanet = vec3(matModelOfPlanets[0][3], matModelOfPlanets[1][3], matModelOfPlanets[2][3]);
-                var distanceBetweenCameraAndPlanet = length(findVector(positionOfCamera, positionOfPlanet));
-                if(distanceBetweenCameraAndPlanet < radiuses[i]*10/divisionOfSizes){
-                        window.isNearAnyPlanet = [true, i];
-                        spheres[i].emission = vec3(0.1, 0.1, 0.1);
-                        extraLightFromCamera = new Light(program, vec4(camera.position, 1));
-                        extraLightFromCamera.intensity.specular = vec3(1.0, 1.0, 1.0);
-                        extraLightFromCamera.intensity.ambient = vec3(1.0, 1.0, 1.0);
-                        extraLightFromCamera.intensity.diffuse = vec3(1.0, 1.0, 1.0);
-                        isNearAnyPlanet = true;
-                }
-            }
-
-            window.isNearAnyPlanet[0] = isNearAnyPlanet;
-            if(!isNearAnyPlanet && oldPlanet != -1){
-                window.isNearAnyPlanet = [false, -1];
-                for (var i = 1; i < numberOfSpheres; i++) {
-                    spheres[i].emission = vec3(0, 0, 0);
-                }
-            }else{
-                // shouldRotate = true;
-            }
 }
 }
 

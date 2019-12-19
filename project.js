@@ -37,7 +37,6 @@ window.onload = function init() {
 
     createPlanets();
 
-    // print(spheres[6].position)
     triangle = new Triangle(program, vec4(spheres[6].position), 20, rotationSpeedsAroundSun[6]/divisionOfSpeeds);
     triangle2 = new Triangle(program, vec4(spheres[6].position), 20, rotationSpeedsAroundSun[6]/divisionOfSpeeds);
     triangle2.invert = -1;
@@ -47,14 +46,10 @@ window.onload = function init() {
 
 }
 
-var x = 3;
-
 function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     camera.render();
-    // light.render();
-
     checkNavigation();
 
     for (var i = 0; i < numberOfSpheres; i++) {
@@ -65,28 +60,28 @@ function render() {
         }
     }
 
+    // If planet is nearby, add a light source from camera
+    // and rotate with the trackball;
     if(isNearAnyPlanet[0]){
-        // print("LIGHT IS RENDERED");
-        extraLightFromCamera.render();
+        if(isNearAnyPlanet[1] != 0){ // If not sun
+            extraLightFromCamera.render();
+        }
+        axis = normalize(axis);
+        if(angle != 0){
+        spheres[window.isNearAnyPlanet[1]].rotateAround(1, axis);
+    }
     }else{
         light.render();
     }
+                
 
-
+    // Rendering and rotating the ring of the saturn
     triangle.render();
     triangle2.render();
     if (shouldRotate && !isNearAnyPlanet[0]){
         triangle.rotate(spheres[6].rotationSpeed);
         triangle2.rotate(spheres[6].rotationSpeed);
-}
-
-//     if(x>0){
-//     spheres[1].rotate(spheres[1].rotationSpeed);
-//     print(spheres[1].matModel);
-//     x--;
-// }
-
-
+    }
 
     requestAnimFrame(render);
 }

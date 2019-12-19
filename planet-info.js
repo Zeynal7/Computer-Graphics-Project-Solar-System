@@ -47,16 +47,17 @@ var rotationSpeedsAroundSun = [ // Km/h;
     24516,  // Uranus
     19548,  // Neptune
     17064,  // Pluto
-    107244    // Moon - Around Sun
+    107244  // Moon - Around Sun
 ];
 
-var rotationSpeedAroundEarth = 3683; // for better results use times 10
+var rotationSpeedAroundEarth = 368300; // real value 3683 for better results use times 100
 
 var planetLocations = [];
 
 function createSpheres(){
     for (var i = 0; i < numberOfSpheres; i++) {
             var newSphere= new Sphere(program, planetLocations[i], rotationSpeedsAroundSun[i]/divisionOfSpeeds, radiuses[i]/divisionOfSizes, texture_id = i.toString());
+            newSphere.whichPlanetToRotateAround = i;
             if(i == numberOfSpheres - 1){
                 newSphere.rotationAxis = vec3(0, 0, 1);
                 newSphere.rotationSpeedAroundGivenAxis = rotationSpeedAroundEarth/divisionOfSpeeds;

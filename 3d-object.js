@@ -134,8 +134,13 @@ class _3DObject {
         if(this.whichPlanetToRotateAround != -1){
             var rotationMat4 = mat4();
             var newPos = subtract(spheres[this.whichPlanetToRotateAround].matModel, mat4());
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    newPos[i][j] = 0;
+                }
+            }
             this.matModel = subtract(this.matModel, newPos);
-            this.matModel = mult(rotate(speed, axis), this.matModel);
+            this.matModel = mult(rotate(speed, negate(axis)), this.matModel);
             rotationMat4 = this.matModel;
             this.matModel = newPos;
             this.matModel = add(rotationMat4, this.matModel);
