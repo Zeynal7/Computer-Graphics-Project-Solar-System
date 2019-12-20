@@ -19,7 +19,7 @@ class Sphere extends _3DObject {
             for (var i = 0; i < N; i++) {
                 var alfa = i * Math.PI / (N - 1) - Math.PI / 2;
 
-                for (var j = 0; j < M; j++) {
+                for (var j = 0; j <= M; j++) {
                     var beta = j * 2 * Math.PI / M;
 
                     var x = self.radius * Math.cos(alfa) * Math.cos(beta);
@@ -27,6 +27,8 @@ class Sphere extends _3DObject {
                     var z = self.radius * Math.cos(alfa) * Math.sin(beta);
 
                     self.vertices.push(vec4(x, y, z, 1.0));
+                
+                    self.texturePoints.push(vec2(1 - j / M, 1 - i / N));
                 }
             }
         };
@@ -39,20 +41,18 @@ class Sphere extends _3DObject {
 
         var generateIndices = function (N, M) {
             var index = function (i, j) {
-                return i * M + j;
+                return i * (M + 1) + j;
             }
 
-            for (var i = 0; i < N; i++)
+            for (var i = 0; i < N - 1; i++)
                 for (var j = 0; j < M; j++) {
-                    if(i != N - 1){
+                    
                     self.indices.push(index(i, j));
-                    self.indices.push(index(i, (j + 1) % M));
+                    self.indices.push(index(i, (j + 1) ));
                     self.indices.push(index(i + 1, j));
-                    self.indices.push(index(i, (j + 1) % M));
-                    self.indices.push(index(i + 1, (j + 1) % M));
+                    self.indices.push(index(i, (j + 1) ));
+                    self.indices.push(index(i + 1, (j + 1) ));
                     self.indices.push(index(i + 1, j));
-                }
-                    self.texturePoints.push(vec2(j / M, i / M));
                 }
         };
 
