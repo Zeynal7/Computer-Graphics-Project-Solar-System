@@ -1,6 +1,6 @@
 
 
-var movingSpeed = 1.7;
+var movingSpeed = 0.7;
 var movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
 var movingMode = false;
 var shouldRotate = true;
@@ -21,7 +21,7 @@ var navigationInfo = {
 function addNavigationTo(element){
 
     element.addEventListener('mousedown', function (event) {
-        if(isNearAnyPlanet[0]){
+        if(isNearAnyPlanet[0] && !shouldRotate){
             var point = canvasToWorld(event);
             startMotion(point[0], point[1]);
         }else{
@@ -33,7 +33,7 @@ function addNavigationTo(element){
         stopMotion(point[0], point[1]);
     });
     element.addEventListener('mousemove', function (event) {
-        if(isNearAnyPlanet[0]){
+        if(trackballMove && !shouldRotate){
             var point = canvasToWorld(event);
             mouseMotion(point[0], point[1]);
         }else if(movingMode){

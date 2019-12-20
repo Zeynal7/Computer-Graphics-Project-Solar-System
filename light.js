@@ -5,7 +5,7 @@ class Light {
         this.intensity = {
             ambient: vec3(1.0, 1.0, 1.0),
             diffuse: vec3(1.0, 1.0, 1.0),
-            specular: vec3(0.2, 0.2, 0.2)
+            specular: vec3(1.0, 1.0, 1.0)
         }
     }
 

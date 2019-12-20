@@ -20,6 +20,8 @@ class Triangle {
         this.texture_id = '11';
         this.invert = 1;
         this.rotationSpeed = rotationSpeed;
+        this.texture = 0;
+        this.bumpTexture = 0;
     }
 
     init(){
@@ -27,6 +29,14 @@ class Triangle {
         this.loadData();
 
         this.generateTexture();
+
+        var sampler = gl.getUniformLocation(program, "sampler");
+        gl.uniform1i(sampler, 0);
+
+        var bumpSampler = gl.getUniformLocation(program, "bumpSampler");
+        gl.uniform1i(bumpSampler, 1);
+
+
 
         this.bufVertex = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufVertex);
@@ -108,8 +118,13 @@ class Triangle {
         gl.vertexAttribPointer(texCoordAttributeLocation, 3, gl.FLOAT, gl.FALSE, 0, 0);
         gl.enableVertexAttribArray(texCoordAttributeLocation);
 
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
         gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
+
+        gl.activeTexture(gl.TEXTURE0+1);
+        gl.bindTexture(gl.TEXTURE_2D, this.bumpTexture);
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.vertices.length/3);
 
@@ -127,6 +142,18 @@ class Triangle {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, document.getElementById('5'));
+
+        var image = document.getElementById('10-bump');
+        var normalsOfImage = getHeightData(image);
+
+        this.bumpTexture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, this.bumpTexture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1000, 500, 0, gl.RGB, gl.UNSIGNED_BYTE, normalsOfImage);
+
     }
 
 }

@@ -24,10 +24,10 @@ function checkTheTrackball(){
             if(distanceBetweenCameraAndPlanet < radiuses[i]*distanceForTrackball/divisionOfSizes){
                     window.isNearAnyPlanet = [true, i];
                     if(i != 0){
-                    spheres[i].emission = vec3(0.1, 0.1, 0.1);
+                    // spheres[i].emission = vec3(0.5, 0.5, 0.5);
                     extraLightFromCamera = new Light(program, vec4(camera.position, 1));
                     extraLightFromCamera.intensity.specular = vec3(1.0, 1.0, 1.0);
-                    extraLightFromCamera.intensity.ambient = vec3(1.0, 1.0, 1.0);
+                    extraLightFromCamera.intensity.ambient = vec3(0.1, 0.1, 0.1);
                     extraLightFromCamera.intensity.diffuse = vec3(1.0, 1.0, 1.0);
                 }
                     isNearAnyPlanet = true;
@@ -134,8 +134,7 @@ function stopMotion( x,  y)
 	     trackballMove = false;
     }
     if(!isNearAnyPlanet[0]){
-    	print("ENTERED HERE");
-	     angle = 0.0;
-	     trackballMove = false;
+	   angle = 0.0;
+	   trackballMove = false;
     }
 }

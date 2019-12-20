@@ -10,13 +10,13 @@ var triangle2;
 
 
 function print(x){
-    return console.log(x);
+    // return console.log(x);
 }
 
 window.onload = function init() {
     canvas = document.getElementById("gl-canvas");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth - 10;
+    canvas.height = window.innerHeight - (12/100) * window.innerHeight;
 
     addNavigationTo(canvas);
 
@@ -27,6 +27,11 @@ window.onload = function init() {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
     gl.enable(gl.DEPTH_TEST);
+    // gl.depthFunc(gl.LEQUAL);
+    // gl.enable(gl.CULL_FACE);
+
+    // var image = document.getElementById('0');
+    // print(getHeightData(image));
 
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
@@ -54,7 +59,7 @@ function render() {
 
     for (var i = 0; i < numberOfSpheres; i++) {
         spheres[i].render();
-        if (shouldRotate && !isNearAnyPlanet[0]){
+        if (shouldRotate){// && !isNearAnyPlanet[0]){
             spheres[i].rotate(spheres[i].rotationSpeed);
             spheres[i].rotateAround(spheres[i].rotationSpeedAroundGivenAxis);
         }
@@ -64,6 +69,7 @@ function render() {
     // and rotate with the trackball;
     if(isNearAnyPlanet[0]){
         if(isNearAnyPlanet[1] != 0){ // If not sun
+            print("RENDERING EXTRA");
             extraLightFromCamera.render();
         }
         axis = normalize(axis);
@@ -78,7 +84,7 @@ function render() {
     // Rendering and rotating the ring of the saturn
     triangle.render();
     triangle2.render();
-    if (shouldRotate && !isNearAnyPlanet[0]){
+    if (shouldRotate){
         triangle.rotate(spheres[6].rotationSpeed);
         triangle2.rotate(spheres[6].rotationSpeed);
     }

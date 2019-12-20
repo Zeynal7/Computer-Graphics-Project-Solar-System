@@ -24,13 +24,14 @@ class _3DObject {
         this.rotationSpeed = rotationSpeed;
         this.matModel = mat4();
         this.material = {
-            ambient: vec3(0.2, 0.3, 0.4),
-            diffuse: vec3(0.3, 0.6, 0.5),
-            specular: vec3(0.9, 1.0, 0.9),
+            ambient: vec3(0.0, 0.0, 0.0),
+            diffuse: vec3(1.0, 1.0, 1.0),
+            specular: vec3(0.0, 0.0, 0.0),
             shininess: 250.0
         }
         this.emission = emission;
         this.texture = 0;
+        this.bumpTexture = 0;
     }
 
     loadData() {
@@ -42,6 +43,14 @@ class _3DObject {
 
         this.loadData();
         this.generateTexture();
+
+        var sampler = gl.getUniformLocation(program, "sampler");
+        gl.uniform1i(sampler, 0);
+
+        var bumpSampler = gl.getUniformLocation(program, "bumpSampler");
+        gl.uniform1i(bumpSampler, 1);
+
+
         // creating buffer for vertex positions
         this.bufVertex = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufVertex);
@@ -65,6 +74,21 @@ class _3DObject {
     }
 
     render() {
+        var modelView = mult(this.matModel, camera.matView);
+        var normalMatrix = mat4ToInverseMat3(modelView);
+
+        var normal = vec4(0.0, 1.0, 0.0, 0.0);
+        var tangent = vec3(1.0, 0.0, 0.0);
+
+        var diffuseProduct = mult(vec4(light.intensity.diffuse, 1.0), vec4(this.material.diffuse, 1.0));
+
+        gl.uniform4fv( gl.getUniformLocation(program, "diffuseProduct"),flatten(vec4(this.material.diffuse, 1.0)));   
+        gl.uniform4fv( gl.getUniformLocation(program, "normal"),flatten(normal));
+        gl.uniform3fv( gl.getUniformLocation(program, "objTangent"),flatten(tangent));
+
+        gl.uniformMatrix3fv( gl.getUniformLocation(program, "normalMatrix"), false, flatten(normalMatrix));
+    
+
         // sending material properties
         var ambient = gl.getUniformLocation(this.program, "col_Ambient");
         gl.uniform3fv(ambient, flatten(this.material.ambient));
@@ -102,8 +126,13 @@ class _3DObject {
         gl.vertexAttribPointer(texCoordAttributeLocation, 2, gl.FLOAT, gl.FALSE, 0, 0);
         gl.enableVertexAttribArray(texCoordAttributeLocation);
 
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
         gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
+
+        gl.activeTexture(gl.TEXTURE0+1);
+        gl.bindTexture(gl.TEXTURE_2D, this.bumpTexture);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufIndex);
         gl.drawElements(gl.TRIANGLES, this.indices.length, gl.UNSIGNED_SHORT, 0);
@@ -112,6 +141,7 @@ class _3DObject {
 
 
     generateTexture(){
+            // Creating regular Texture
             this.texture = gl.createTexture();
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -119,6 +149,18 @@ class _3DObject {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, document.getElementById(self.texture_id));
+
+            // Getting image data, and adding it to bump Texture
+            this.bumpTexture = gl.createTexture();
+            var image = document.getElementById(self.texture_id+'-bump');
+            var normalsOfImage = getHeightData(image);
+            gl.bindTexture(gl.TEXTURE_2D, this.bumpTexture);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1000, 500, 0, gl.RGB, gl.UNSIGNED_BYTE, normalsOfImage);
+
     }
 
     translate(dir) {
@@ -131,19 +173,23 @@ class _3DObject {
 
 
     rotateAround(speed = self.rotationSpeedAroundGivenAxis, axis = this.rotationAxis){
+
+        // If planet has other planet to rotate around
         if(this.whichPlanetToRotateAround != -1){
-            var rotationMat4 = mat4();
-            var newPos = subtract(spheres[this.whichPlanetToRotateAround].matModel, mat4());
+            // If it is trackball move, then get current planet, otherwise get whatever was given
+            var newPos = subtract(trackballMove ? this.matModel : spheres[this.whichPlanetToRotateAround].matModel, mat4());
             for (var i = 0; i < 3; i++) {
                 for (var j = 0; j < 3; j++) {
                     newPos[i][j] = 0;
                 }
             }
+
+            // Move to the origin
             this.matModel = subtract(this.matModel, newPos);
+            // Rotate around given axis
             this.matModel = mult(rotate(speed, negate(axis)), this.matModel);
-            rotationMat4 = this.matModel;
-            this.matModel = newPos;
-            this.matModel = add(rotationMat4, this.matModel);
+            // Move Back
+            this.matModel = add(newPos, this.matModel);
         }
     }
 }
