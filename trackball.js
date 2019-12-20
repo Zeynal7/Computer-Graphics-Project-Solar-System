@@ -122,6 +122,7 @@ function startMotion( x,  y)
 
     lastPos = trackballView(x, y);
     trackballMove=true;
+    document.getElementById('trackball').innerHTML = "Trackball Move: Active";
 }
 
 function stopMotion( x,  y)
@@ -132,9 +133,11 @@ function stopMotion( x,  y)
     else {
 	     angle = 0.0;
 	     trackballMove = false;
+         document.getElementById('trackball').innerHTML = "Trackball Move: Deactive";
     }
     if(!isNearAnyPlanet[0]){
 	   angle = 0.0;
 	   trackballMove = false;
+       document.getElementById('trackball').innerHTML = "Trackball Move: Deactive";
     }
 }

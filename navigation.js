@@ -26,6 +26,7 @@ function addNavigationTo(element){
             startMotion(point[0], point[1]);
         }else{
             movingMode = !movingMode;
+            document.getElementById('mouse').innerHTML = "Mouse Movements: " + ((movingMode)?("Active"):("Deactive"));
         } 
     });
     element.addEventListener("mouseup", function(event){
@@ -87,6 +88,7 @@ function addNavigationTo(element){
         switch(e.keyCode){
             case 82: // r
                 shouldRotate = !shouldRotate;
+                document.getElementById('rotation').innerHTML = "Rotation: " + ((shouldRotate)?("Active"):("Deactive"));
                 break;
             case 87: // w
                 var pointsToAdd = findIteration(camera.position, camera.target);
@@ -135,13 +137,49 @@ function addNavigationTo(element){
                 break;
             case 38: // Arrow Up
                 movingSpeed +=0.05;
-                movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
+                updateSpeedData();
                 break;
             case 40: // Arrow Down
                 if (movingSpeed > 0.05){
                     movingSpeed -=0.05;
-                    movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
+                    updateSpeedData();
                 } 
+                break;
+            case 49: // 1
+                movingSpeed = 1;
+                updateSpeedData();
+                break;
+            case 50: // 2
+                movingSpeed = 2;
+                updateSpeedData();
+                break;
+            case 51: // 3
+                movingSpeed = 3;
+                updateSpeedData();
+                break;
+            case 52: // 4
+                movingSpeed = 4;
+                updateSpeedData();
+                break;
+            case 53: // 5
+                movingSpeed = 5;
+                updateSpeedData();
+                break;
+            case 54: // 6
+                movingSpeed = 6;
+                updateSpeedData();
+                break;
+            case 55: // 7
+                movingSpeed = 7;
+                updateSpeedData();
+                break;
+            case 56: // 8
+                movingSpeed = 8;
+                updateSpeedData();
+                break;
+            case 57: // 9
+                movingSpeed = 9;
+                updateSpeedData();
                 break;
         }
     });
@@ -177,6 +215,11 @@ function addMovements(direction, pointsToAdd){
     navigationInfo[direction][0] = true;
     glMatrix.vec3.mul(pointsToAdd, pointsToAdd, movingSpeedVec3);
     navigationInfo[direction][1] = pointsToAdd;
+}
+
+function updateSpeedData(){
+    movingSpeedVec3 = vec3(movingSpeed, movingSpeed, movingSpeed);
+    document.getElementById('speed').innerHTML = "Current Speed: " + movingSpeed.toFixed(2); 
 }
 
 

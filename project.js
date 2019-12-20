@@ -10,7 +10,7 @@ var triangle2;
 
 
 function print(x){
-    // return console.log(x);
+    return console.log(x);
 }
 
 window.onload = function init() {
@@ -27,21 +27,16 @@ window.onload = function init() {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
     gl.enable(gl.DEPTH_TEST);
-    // gl.depthFunc(gl.LEQUAL);
-    // gl.enable(gl.CULL_FACE);
-
-    // var image = document.getElementById('0');
-    // print(getHeightData(image));
 
     program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
     camera = new Camera(program, vec3(0, 0, 100), vec3(0, 0, -100), vec3(0, -1, 0));
-    // camera = new Camera(program, vec3(0, 100, 0), vec3(0, -100, 0), vec3(0, 0, 1));
     light = new Light(program, vec4(0, 0, 0, 1));
 
     createPlanets();
 
+    // Ring of the saturn
     triangle = new Triangle(program, vec4(spheres[6].position), 20, rotationSpeedsAroundSun[6]/divisionOfSpeeds);
     triangle2 = new Triangle(program, vec4(spheres[6].position), 20, rotationSpeedsAroundSun[6]/divisionOfSpeeds);
     triangle2.invert = -1;
@@ -59,7 +54,7 @@ function render() {
 
     for (var i = 0; i < numberOfSpheres; i++) {
         spheres[i].render();
-        if (shouldRotate){// && !isNearAnyPlanet[0]){
+        if (shouldRotate){
             spheres[i].rotate(spheres[i].rotationSpeed);
             spheres[i].rotateAround(spheres[i].rotationSpeedAroundGivenAxis);
         }

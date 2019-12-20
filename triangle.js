@@ -37,7 +37,6 @@ class Triangle {
         gl.uniform1i(bumpSampler, 1);
 
 
-
         this.bufVertex = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufVertex);
         gl.bufferData(gl.ARRAY_BUFFER, flatten(this.vertices), gl.STATIC_DRAW);
@@ -52,11 +51,6 @@ class Triangle {
         this.bufTexture = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.bufTexture);
         gl.bufferData(gl.ARRAY_BUFFER, flatten(this.vertices), gl.STATIC_DRAW);
-
-        // // creating buffer for element indices
-        // this.bufIndex = gl.createBuffer();
-        // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufIndex);
-        // gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indices), gl.STATIC_DRAW);
 
     }
 

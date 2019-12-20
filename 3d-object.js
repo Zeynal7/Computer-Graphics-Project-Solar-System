@@ -74,18 +74,16 @@ class _3DObject {
     }
 
     render() {
+
+        // Bump Mapping 
         var modelView = mult(this.matModel, camera.matView);
         var normalMatrix = mat4ToInverseMat3(modelView);
 
         var normal = vec4(0.0, 1.0, 0.0, 0.0);
         var tangent = vec3(1.0, 0.0, 0.0);
 
-        var diffuseProduct = mult(vec4(light.intensity.diffuse, 1.0), vec4(this.material.diffuse, 1.0));
-
-        gl.uniform4fv( gl.getUniformLocation(program, "diffuseProduct"),flatten(vec4(this.material.diffuse, 1.0)));   
         gl.uniform4fv( gl.getUniformLocation(program, "normal"),flatten(normal));
         gl.uniform3fv( gl.getUniformLocation(program, "objTangent"),flatten(tangent));
-
         gl.uniformMatrix3fv( gl.getUniformLocation(program, "normalMatrix"), false, flatten(normalMatrix));
     
 

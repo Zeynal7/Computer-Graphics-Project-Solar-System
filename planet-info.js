@@ -11,6 +11,7 @@ var divisionOfSpeeds = 500000;
 
 var radiuses = [ // in KM
     60268, // Sun - real value is 695510, but it is too big that eats other planets
+            // (distance can be increased, but it makes navigation harder)
     2439.7, // Mercury
     6051.8, // Venus
     6378.1, // Earth
