@@ -3,7 +3,7 @@ Computer Graphics Project Solar System ADA University - with WebGL
 
 Some bump maps of the planet are just random maps I found, and is not necessarily for that planet.
 
-[Demo](https://zeynal7.github.io/Computer-Graphics-Project-Solar-System/)
+[Demo](https://zeynal7.github.io/Computer-Graphics-Project-Solar-System/) - might take a few minutes to open, as it downloads all the files to your pc.
 
 W - forward, S - backward, A - left, D - right, Z - up, X - down, mouse - to move around.
 
